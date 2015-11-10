@@ -1,6 +1,6 @@
 #Webkiosk-Authentication-Through-Android
 
-Webkiosk Authentication is used to validate credentials of students and teachers of JIIT.It uses webkiosk-authentication-api as its backend (courtesy deathping1994) at url http://probase.anip.xyz:8080/login_action
+Webkiosk Authentication is used to validate credentials of students and teachers of JIIT.It uses webkiosk-authentication-api as its backend (Courtesy:https://github.com/deathping1994) at url http://probase.anip.xyz:8080/login_action
 
 If you find any issues or bugs please report them with pictures/snapshots or inputs used.
 
