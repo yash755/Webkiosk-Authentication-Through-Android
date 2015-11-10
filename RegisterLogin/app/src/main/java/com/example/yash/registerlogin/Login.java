@@ -76,16 +76,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         radioButton = (RadioButton) findViewById(selectedId);
 
                         String usertype =radioButton.getText().toString();
+                        System.out.println(usertype);
                         String username = editText.getText().toString();
                         String password = editText2.getText().toString();
                         String date     = editText3.getText().toString();
 
-                        if(usertype == "Teacher")
-                           usertype = "E";
-                        else
+                        if(usertype.equals("Teacher")) {
+
+                            usertype = "E";
+                            System.out.println(usertype);
+                        }
+                        else {
                             usertype = "S";
+                            System.out.println(usertype);
+                        }
                         User user = new User(username,password,date,usertype);
-                        System.out.println(user.user + user.password + user.usertype + user.date );
+                        System.out.println(user.usertype +user.user + user.password +  user.date );
 
                         authenticate(user);
 
