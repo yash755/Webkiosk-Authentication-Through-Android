@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
@@ -18,7 +20,9 @@ import android.widget.Toast;
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
     Button button;
-    EditText editText,editText2;
+    EditText editText,editText2,editText3;
+    RadioGroup radiousertype;
+    RadioButton radioButton;
 
     Userlocalstore userlocalstore;
 
@@ -29,6 +33,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         editText = (EditText) findViewById(R.id.editText);
         editText2 = (EditText) findViewById(R.id.editText2);
+        editText3 = (EditText) findViewById(R.id.editText3);
+        radiousertype = (RadioGroup) findViewById(R.id.radiousertype);
 
         button = (Button) findViewById(R.id.button);
 
@@ -39,14 +45,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
         // check if you are connected or not
-        if(isConnected()){
-            Toast.makeText(getApplicationContext(), "You are Conncted", Toast.LENGTH_SHORT).show();
-            button.setOnClickListener(this);
-
+        if(userlocalstore.getuserloggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
         }
-        else{
-            Toast.makeText(getApplicationContext(), "You are Not Conncted", Toast.LENGTH_SHORT).show();
-            button.setOnClickListener(this);
+        else {
+            if (isConnected()) {
+                Toast.makeText(getApplicationContext(), "You are Conncted", Toast.LENGTH_SHORT).show();
+                button.setOnClickListener(this);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "You are Not Conncted", Toast.LENGTH_SHORT).show();
+                button.setOnClickListener(this);
+            }
         }
     }
 
@@ -61,10 +71,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         Toast.makeText(getApplicationContext(), "Fill All Credentials", Toast.LENGTH_SHORT).show();
                     else {
 
+
+                        int selectedId = radiousertype.getCheckedRadioButtonId();
+                        radioButton = (RadioButton) findViewById(selectedId);
+
+                        String usertype =radioButton.getText().toString();
                         String username = editText.getText().toString();
                         String password = editText2.getText().toString();
+                        String date     = editText3.getText().toString();
 
-                        User user = new User(username, password);
+                        if(usertype == "Teacher")
+                           usertype = "E";
+                        else
+                            usertype = "S";
+                        User user = new User(username,password,date,usertype);
+                        System.out.println(user.user + user.password + user.usertype + user.date );
 
                         authenticate(user);
 
@@ -100,7 +121,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                 }
                 else{
-                    System.out.println(returneduser.error);
                     showerrormessage(returneduser.error);
                 }
                 }
@@ -115,8 +135,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         dialogbuilder.show();
     }
 
-    private void loguserin(User returneduser ){
+    private void loguserin(User returneduser) {
 
+        System.out.println(returneduser.user + returneduser.password + returneduser.usertype + returneduser.date + returneduser.success + returneduser.error + returneduser.authkey);
         userlocalstore.userData(returneduser);
         userlocalstore.setUserloggedIn(true);
 
@@ -138,6 +159,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if(editText.getText().toString().trim().equals(""))
             return false;
         else if(editText2.getText().toString().trim().equals(""))
+            return false;
+        else if(editText3.getText().toString().trim().equals(""))
             return false;
         else
             return true;

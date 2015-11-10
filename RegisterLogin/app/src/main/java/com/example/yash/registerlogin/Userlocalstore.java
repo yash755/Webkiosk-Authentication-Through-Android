@@ -17,7 +17,6 @@ public class Userlocalstore{
     {
         SharedPreferences.Editor speditor = userLocalDatabase.edit();
         speditor.putString("authkey",user.authkey);
-        speditor.putString("usertype",user.usertype);
         speditor.putString("password",user.password);
         speditor.putString("user",user.user);
         speditor.commit();

@@ -26,8 +26,6 @@ public class ServerRequest {
 
     ProgressDialog progressDialog;
 
-    public static final int Connection_Timeout = 1000*15;
-
     public ServerRequest(Context context){
 
         progressDialog = new ProgressDialog(context);
@@ -66,18 +64,17 @@ public class ServerRequest {
         @Override
                 protected User doInBackground(Void... voids) {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost  httppost = new HttpPost("http://188.166.249.229:8080/login_action");
+                HttpPost  httppost = new HttpPost("http://probase.anip.xyz:8080/login_action");
                 User returneduser = null;
 
             try{
 
                 JSONObject jsonobj = new JSONObject();
 
-                System.out.println("I am here");
                 jsonobj.put("user", user.user);
                 jsonobj.put("pass", user.password);
-                jsonobj.put("usertype", "S");
-                jsonobj.put("date1", "24-02-1995");
+                jsonobj.put("usertype",user.usertype);
+                jsonobj.put("date1",user.date);
 
                 String pass = (String) jsonobj.get("pass");
 
@@ -94,10 +91,7 @@ public class ServerRequest {
                 String responseServer = str.getStringFromInputStream(inputStream);
 
 
-                System.out.println(responseServer);
-
-
-                JSONObject jsonobj1 = new JSONObject(responseServer);
+               JSONObject jsonobj1 = new JSONObject(responseServer);
 
                 if(jsonobj1.length() == 1){
 
@@ -111,7 +105,6 @@ public class ServerRequest {
                     String authkey = (String) jsonobj1.get("authkey");
                     String success = (String) jsonobj1.get("success");
                     String usertype = (String) jsonobj1.get("usertype");
-                    System.out.println(username + authkey + success + usertype + pass);
 
                     returneduser = new User(username,pass,authkey,success,usertype);
 
@@ -147,8 +140,7 @@ public class ServerRequest {
 
             String result = getStringFromInputStream(is);
 
-            System.out.println(result);
-            System.out.println("Done");
+
 
         }
 
